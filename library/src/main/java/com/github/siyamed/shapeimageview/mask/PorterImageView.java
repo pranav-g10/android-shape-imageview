@@ -111,11 +111,15 @@ public abstract class PorterImageView extends ImageView {
                         invalidated = false;
                         Matrix imageMatrix = getImageMatrix();
                         if (imageMatrix == null){// && mPaddingTop == 0 && mPaddingLeft == 0) {
+                            if (PixelFormat.formatHasAlpha(drawable.getOpacity()))
+                                drawableCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.SRC);
                             drawable.draw(drawableCanvas);
                         } else {
                             int drawableSaveCount = drawableCanvas.getSaveCount();
                             drawableCanvas.save();
                             drawableCanvas.concat(imageMatrix);
+                            if (PixelFormat.formatHasAlpha(drawable.getOpacity()))
+                                drawableCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.SRC);
                             drawable.draw(drawableCanvas);
                             drawableCanvas.restoreToCount(drawableSaveCount);
                         }
